@@ -21,12 +21,38 @@
   </form>
   <div>
     <?php
+
+        $host = 'localhost';
+        $user = 'root';
+        $pass = "";
+        $database = "temp";
+        $port = 3307;
+
+        $conn = mysqli_connect($host, $user, $pass, $database, $port);
+
+        if (!$conn){
+          die("There has been an error while connecting to the database");
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $name = $_POST['name'];
             $rno = $_POST['roll_number'];
             $marks = $_POST['marks'];
 
-            echo "<br> Hey $name it seems your roll number is $rno and you have scored $marks<br>";
+            $sql = "INSERT INTO `student_info` (`Name`, `Roll No`, `Marks`) VALUES ('$name ', '$rno', '$marks')";
+
+            $result = mysqli_query($conn, $sql);
+
+            if ($result){
+              echo "Data added to the database successfully";
+            }else{
+              echo "There has been an error while adding the data";
+            }
+
+            header("localhost/cwh_tutorials/15_forms2.php");
+            exit();
+
+            // echo "<br> Hey $name it seems your roll number is $rno and you have scored $marks<br>";
             // we can add this into database which we will learn in the upcoming sessions
         }
     ?>

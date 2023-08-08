@@ -71,18 +71,6 @@ button:hover {
   </style>
 </head>
 <body>
-<?php
-    // echo "<h1>This is for the form handling</h1>";
-    if ($_SERVER['REQUEST_METHOD'] == "POST"){
-        // ($_SERVER['REQUEST_METHOD']) it is used for the purpose of checking if the server method is set or not
-        $email = $_POST['email'];
-        $pass = $_POST['password'];
-        echo "<div class='alert' role='alert'>Yes man we got your data your email is $email and password is $pass</div><br>";
-    }
-
-    // we can insert php script wherever we want and hence we have made it available here and we will make sure that it will be used in the future
-?>
-
   <div class="container">
   <br>
   <hr>
@@ -99,5 +87,32 @@ button:hover {
       <button type="submit">Submit</button>
     </form>
   </div>
+  <?php
+    $host = "localhost";
+    $user = "root";
+    $pass = "";
+    $database = "temp";
+    $port = 3307;
+
+    $conn = mysqli_connect($host, $user, $pass, $database, $port);
+
+    if (!$conn){
+      die("Error while connecting to database");
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+      $email = $_POST['email'];
+      $pass = $_POST['password'];
+    }
+    $sql = "INSERT INTO `email_pass` (`email`, `password`) VALUES ('$email', '$pass')";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result){
+      echo "Data has been added into the database";
+    }else{
+      echo "There is problem while adding to database";
+    }
+?>
 </body>
 </html>
